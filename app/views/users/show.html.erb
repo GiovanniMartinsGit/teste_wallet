@@ -1,0 +1,40 @@
+<h1><%= @user.name %></h1>
+
+<p><strong>Saldo:</strong> <%= number_to_currency(@user.saldo) %></p>
+
+<h2>Entradas da Carteira Virtual</h2>
+
+<table>
+  <tr>
+    <th>Data e Hora</th>
+    <th>Valor</th>
+  </tr>
+
+  <% @wallet_entries.each do |entry| %>
+    <tr>
+      <td><%= entry.created_at.strftime("%d/%m/%Y %H:%M:%S") %></td>
+      <td><%= number_to_currency(entry.amount) %></td>
+    </tr>
+  <% end %>
+</table>
+
+<%= link_to 'Voltar', users_path %>
+<%= link_to 'Editar', edit_user_path(@user) %>
+
+<h2>Operações na Carteira Virtual</h2>
+
+<%= form_with(url: credit_user_path(@user), method: :post) do |f| %>
+  <p>
+    <%= f.label :amount, 'Crédito:' %>
+    <%= f.text_field :amount %>
+    <%= f.submit 'Creditar' %>
+  </p>
+<% end %>
+
+<%= form_with(url: debit_user_path(@user), method: :post) do |f| %>
+  <p>
+    <%= f.label :amount, 'Débito:' %>
+    <%= f.text_field :amount %>
+    <%= f.submit 'Debitar' %>
+  </p>
+<% end %>

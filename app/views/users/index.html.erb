@@ -1,0 +1,24 @@
+<h1>Usuários</h1>
+
+<p><%= link_to 'Adicionar Novo Usuário', new_user_path %></p>
+
+<table>
+  <tr>
+    <th>Nome</th>
+    <th>Saldo</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.name %></td>
+      <td><%= number_to_currency(user.saldo) %></td>
+      <td><%= link_to 'Detalhes', user_path(user) %></td>
+      <td><%= link_to 'Editar', edit_user_path(user) %></td>
+      <td><%= link_to 'Excluir', user_path(user), method: :delete, data: { confirm: 'Você tem certeza?' } %></td>
+    </tr>
+  <% end %>
+</table>
