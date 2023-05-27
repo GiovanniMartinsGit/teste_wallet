@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  teste_wallet_postgres:
+    image: postgres
+    platform: linux/amd64
+    container_name: teste_wallet_postgres
+    environment:
+      POSTGRES_PASSWORD: teste_wallet
+      POSTGRES_HOST_AUTH_METHOD: trust
+      HOST: http://192.168.0.107:3000
+    volumes:
+      - ./tmp/postgres:/var/lib/postgresql/data:z
+
+  teste_wallet:
+    build: .
+    platform: linux/amd64
+    container_name: teste_wallet
+    command: bash -c "bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - ./:/var/www/teste_wallet:z
+    ports:
+      - "3000:3000"
+    depends_on:
+      - teste_wallet_postgres
+
+# docker compose build
+# docker compose run --rm teste_wallet bundle install
+# docker compose run --rm teste_wallet rake db:drop
+# docker compose run --rm teste_wallet rake db:create
+# docker compose run --rm teste_wallet rake db:migrate
+# docker compose run --rm teste_wallet rake seed:migrate
+# docker compose run  --rm -p 3000:3000 teste_wallet rails s -b 0.0.0.0
+# docker compose run  --rm teste_wallet rails c
